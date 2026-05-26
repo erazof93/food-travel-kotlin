@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -30,14 +31,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun PlatoCard(plato: Plato, onClick: () -> Unit){
+fun PlatoCard(plato: Plato, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 6.dp)
+            .padding(horizontal = 16.dp, vertical = 4.dp)
             .clickable { onClick() },
         colors = CardDefaults.cardColors(
-            containerColor = Color.White // Fondo blanco como en la imagen
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 2.dp
@@ -47,130 +48,84 @@ fun PlatoCard(plato: Plato, onClick: () -> Unit){
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp), // Espaciado interno de la tarjeta
+                .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // 1. Imagen cuadrada con bordes redondeados
             Image(
                 painter = painterResource(id = plato.imagen),
                 contentDescription = plato.nombre,
                 modifier = Modifier
-                    .size(100.dp) // Tamaño fijo y cuadrado
+                    .size(90.dp)
                     .clip(RoundedCornerShape(12.dp)),
                 contentScale = ContentScale.Crop
             )
-
             Spacer(modifier = Modifier.width(16.dp))
 
-            
-            Column(
-                modifier = Modifier.weight(1f) // Ocupa todo el espacio restante horizontal
-            ) {
-                // Nombre del lugar
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = "Mercado San Pedro",
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
-                // Ubicación (Ícono + Texto)
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         imageVector = Icons.Default.LocationOn,
                         contentDescription = "Ubicación",
-                        tint = Color.Gray,
-                        modifier = Modifier.size(16.dp)
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(14.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = "Cusco", // plato.ubicacion
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Gray
+                        text = "Cusco",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-                // Fila inferior: Nombre del plato y Precio/Estado
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.Bottom
                 ) {
-                    // Nombre del plato
                     Text(
-                        text = plato.nombre, // "Cuy al horno"
+                        text = plato.nombre,
                         style = MaterialTheme.typography.bodyLarge,
-                        color = Color.DarkGray
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
 
-                    // Columna para Precio y Estado (alineados a la derecha)
-                    Column(
-                        horizontalAlignment = Alignment.End
-                    ) {
+                    Column(horizontalAlignment = Alignment.End) {
                         Text(
-                            text = "S/ ${plato.precio}", // S/ 25.00
+                            text = "S/ ${plato.precio}",
                             style = MaterialTheme.typography.bodyLarge,
                             fontWeight = FontWeight.Bold,
-                            color = Color.Black
+                            color = MaterialTheme.colorScheme.primary
                         )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = "Disponible", // O plato.estado
-                            style = MaterialTheme.typography.bodySmall,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFF90EE90)
-                        )
+                        Spacer(modifier = Modifier.height(2.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = Icons.Default.Star,
+                                contentDescription = null,
+                                tint = Color(0xFFF4A261),
+                                modifier = Modifier.size(12.dp)
+                            )
+                            Spacer(modifier = Modifier.width(2.dp))
+                            Text(
+                                text = "Disponible",
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colorScheme.tertiary
+                            )
+                        }
                     }
                 }
             }
         }
     }
-    /*Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 12.dp)
-            .clickable {
-                onClick()
-            },
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp
-        ),
-        shape = RoundedCornerShape(16.dp)
-
-    ) {
-        Column(
-        ) {
-            Image(
-                painter = painterResource(id = plato.imagen),
-                contentDescription = plato.nombre,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(180.dp),
-                contentScale = ContentScale.Crop
-            )
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Text(
-                    text = plato.nombre,
-                    style = MaterialTheme.typography.titleLarge
-                )
-                Spacer(
-                    modifier = Modifier.height(8.dp)
-                )
-                Text(
-                    text = plato.descripcion,
-                    style = MaterialTheme.typography.bodyMedium
-
-                )
-            }
-        }
-    }*/
-
 }
